@@ -1,0 +1,149 @@
+﻿@using SMT.Domain.Entities;
+@{
+    ViewBag.Title = "Cadastro de Técnicos";
+}
+@model Tecnico
+<h2>@Html.Raw(ViewBag.Title)</h2>
+
+@using (Html.BeginForm("Salvar", "Tecnico", FormMethod.Post, new { id = "formCadastro" }))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Nome">Nome:</label>
+                <input required="required" type="text" class="form-control" id="Nome" name="Nome" placeholder="Ex.: João" maxlength="50" value="@Model?.Nome">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Sobrenome">CPF:</label>
+                <input required="required" type="text" class="form-control" id="CPF" name="CPF" data-mask="000.000.000-00" placeholder="Ex.: 999.999.999-99" maxlength="14" autocomplete="off" value="@Model?.CPF">
+            </div>
+        </div>
+    </div>
+    @*
+    <div class="row">
+    <div class="col-md-6">
+    <div class="form-group">
+    <label for="Sobrenome">Sobrenome:</label>
+    <input required="required" type="text" class="form-control" id="Sobrenome" name="Sobrenome" placeholder="Ex.: da Silva" maxlength="255">
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="form-group">
+    <label for="Nacionalidade">Nacionalidade:</label>
+    <input required="required" type="text" class="form-control" id="Nacionalidade" name="Nacionalidade" placeholder="Ex.: brasileira" maxlength="50">
+    </div>
+    </div>
+
+    </div>
+    *@
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="CEP">CEP:</label>
+                <input required="required" type="text" class="form-control" id="CEP" name="CEP" placeholder="Ex.: 01011-100" maxlength="9" value="@Model?.Endereco?.CEP">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="Estado">Estado:</label>
+                <select required="required" id="Estado" class="form-control" name="Estado" >
+                    <option value="">Selecione</option>
+
+                    @switch (Model?.Endereco?.Estado)
+                    {
+                        case "São Paulo":
+                            <option selected value="SP">São Paulo</option>
+                            <option value="PE">Pernambuco</option>
+                            break;
+                        case "Pernambuco":
+                            <option value="SP">São Paulo</option>
+                            <option selected value="PE">Pernambuco</option>
+                            break;
+                        default:
+                            <option value="SP">São Paulo</option>
+                            <option value="PE">Pernambuco</option>
+                            break;
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="Cidade">Cidade:</label>
+                <input required="required" type="text" class="form-control" id="Cidade" name="Cidade" maxlength="50" placeholder="Ex.: São Paulo" value="@Model?.Endereco?.Cidade">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="Logradouro">Logradouro:</label>
+                <input required="required" type="text" class="form-control" id="Logradouro" name="Logradouro" placeholder="Ex.: Rua Boa Vista 253" maxlength="500" value="@Model?.Endereco?.Logradouro">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Email">E-mail:</label>
+                <input required="required" type="text" class="form-control" id="Email" name="Email" placeholder="Ex.: email@email.com" maxlength="2079" value="@Model?.Contato?.Email">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Telefone">Telefone:</label>
+                <input required="required" type="tel" class="form-control" id="Telefone" name="Telefone" placeholder="Ex.: (11) 2020-3030" maxlength="15" value="@Model?.Contato?.Telefone">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="pull-left">
+                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#capturafotoModal" tar">Capturar Foto</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-sm btn-success" onclick="salvar_tecnico()">Salvar</button>
+                @Html.ActionLink("Voltar", "Index", "Home", new { }, new { @class = "btn btn-sm btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+<div class="modal fade" tabindex="-1" id="capturafotoModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Camera</div>
+                    <div class="panel-body text-center">
+                        <div id="mac_camera"></div>
+                        <div id="resultado"></div>
+                        <!-- botão para tirar foto -->
+                        <br />
+                        <form>
+                            <div class="pull-left">
+                                <input type="button" class="btn btn-success" value="Capturar Imagem" onClick="tira_foto()">
+                            </div>
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-primary" data-dismiss="modal" onClick="salvar_foto()">Salvar</button>
+                                <button id="fecher_modal" type="button" class="btn btn-danger" data-dismiss="modal" onclick="habilitar_camera()">Fechar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+
+<!-- inclui a livraria javascript -->
+<script src="~/webcamjs/webcam.js"></script>

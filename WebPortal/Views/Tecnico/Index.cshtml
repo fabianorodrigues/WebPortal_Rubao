@@ -1,0 +1,11 @@
+﻿@*@model WebPortal.Models.Cada_TecnicoModel
+*@
+@{
+    ViewData["Title"] = "Cadastro de Técnico";
+}
+
+<div class="jumbotron">
+    <h2 class="display-4">Cadastro de Técnicos</h2>
+    @Html.ActionLink("Incluir Técnico", "Incluir", "Tecnico", new { }, new { @class = "btn btn-sm btn-primary pull-right" })
+    <table id="gridClientes" class="table"></table>
+</div>

@@ -1,0 +1,68 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>WebcamJS - Captura Imagem</title>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <style type="text/css">
+        body {
+            font-family: Helvetica, sans-serif;
+        }
+        h2, h3 {
+            margin-top: 0;
+        }
+        form {
+            margin-top: 15px;
+        }
+        form > input {
+            margin-right: 15px;
+        }
+        #buttonhide {
+            background: transparent;
+            border: none !important;
+            font-size: 0;
+        }
+    </style>
+
+</head>
+<body class="container">
+    <br />
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Camera</div>
+            <div class="panel-body">
+                <div id="mac_camera"></div>
+                <!-- botão para tirar foto -->
+                <form>
+                    <input type="button" class="btn btn-success" value="Capturar Imagem" onClick="tira_foto()">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Imagem Capturada</div>
+            <div class="panel-body">
+                <div id="resultado">Sua imagem vai aparecer aqui.</div>
+            </div>
+            <br />
+            <br />
+        </div>
+    </div>
+
+    <div class="col-md-2">    </div>
+
+    @section scripts
+    {
+        <script src="~/webcamjs/webcam.js"></script>
+        <script src="~/js/site.js"></script>
+    }
+  
+</body>
+</html>
